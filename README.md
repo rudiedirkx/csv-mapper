@@ -17,7 +17,7 @@ Record mappers
 
 To keep only certain columns, and discard the rest, use the `KeepColumnsMapper`:
 
-	$reader = Reader::createFromPath($file);
+	$reader = \rdx\csvmapper\Reader::createFromPath($file);
 	$reader->addMapper(new KeepColumnsMapper(['firstname', 'lastname', 'email']));
 
 Create your own record mapper by implementing `RecordMapper`:
@@ -40,7 +40,7 @@ Require columns
 
 Require columns before processing iterating through the rows:
 
-	$reader = Reader::createFromPath($file);
+	$reader = \rdx\csvmapper\Reader::createFromPath($file);
 	try {
 		$reader->requireColumns(['email']);
 	}
@@ -76,7 +76,7 @@ To format several date fields with your own date formatter:
 	}
 	
 	try {
-		$reader = Reader::createFromPath($file);
+		$reader = \rdx\csvmapper\Reader::createFromPath($file);
 		$reader->addMapper(new ColumnsMapper(new DateFormatMapper(), ['birthdate', 'created_on', 'valid_until']));
 	}
 	catch ( LineException $ex ) {
