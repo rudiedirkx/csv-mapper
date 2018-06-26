@@ -17,6 +17,10 @@ class Reader extends BaseReader {
 		$this->setHeaderOffset(0);
 	}
 
+	public function getHeader(): array {
+		return array_map('trim', parent::getHeader());
+	}
+
 	public function getRecord( $offset ) {
 		$header = $this->getHeader();
 		$row = $this->seekRow($offset);
