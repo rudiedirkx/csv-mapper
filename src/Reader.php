@@ -18,12 +18,16 @@ class Reader extends BaseReader {
 	}
 
 	public function getHeader(): array {
-		return array_map('trim', parent::getHeader());
+		return $this->trimRecord(parent::getHeader());
+	}
+
+	protected function trimRecord( array $record ) {
+		return array_map('trim', $record);
 	}
 
 	public function getRecord( $offset ) {
 		$header = $this->getHeader();
-		$row = $this->seekRow($offset);
+		$row = $this->trimRecord($this->seekRow($offset));
 		return $header ? array_combine($header, $row) : $row;
 	}
 
@@ -31,6 +35,7 @@ class Reader extends BaseReader {
 		$iterator = parent::getRecords($header);
 
 		return new MapIterator($iterator, function(array $record, $index) {
+			$record = $this->trimRecord($record);
 			foreach ( $this->mappers as $mapper ) {
 				$record = $mapper->map($record, $index);
 			}
