@@ -21,13 +21,22 @@ class Reader extends BaseReader {
 		return $this->trimRecord(parent::getHeader());
 	}
 
-	protected function trimRecord( array $record ) {
-		return array_map('trim', $record);
+	protected function trimRecord( $record ) {
+		if (is_array($record)) {
+			return array_map('trim', $record);
+		}
+
+		return $record;
 	}
 
 	public function getRecord( $offset ) {
+		$row = $this->seekRow($offset);
+		if (!is_array($row)) {
+			return $row;
+		}
+
 		$header = $this->getHeader();
-		$row = $this->trimRecord($this->seekRow($offset));
+		$row = $this->trimRecord($row);
 		return $header ? array_combine($header, $row) : $row;
 	}
 

@@ -6,8 +6,12 @@ use Exception;
 
 class LineException extends Exception {
 
-	public function __construct( $line, $message ) {
+	protected $record;
+
+	public function __construct( $line, $message, array $record = null ) {
 		parent::__construct($message, $line);
+
+		$this->record = $record;
 	}
 
 	public function getCsvLine() {
@@ -15,7 +19,7 @@ class LineException extends Exception {
 	}
 
 	public function getRecord( Reader $reader ) {
-		return $reader->getRecord($this->getCode());
+		return $this->record ?? $reader->getRecord($this->getCode());
 	}
 
 }
